@@ -58,7 +58,7 @@ func parseXML(address string) rss.XMLFeed {
     panic(err)
   }
 
-  xmlFeed, err := rss.ToXml(data)
+  xmlFeed, err := rss.ToXML(data)
   if err != nil {
     panic(err)
   }

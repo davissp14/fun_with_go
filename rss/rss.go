@@ -37,7 +37,7 @@ func (rss Rss) FetchData(address string) ([]byte, error) {
   return data, err
 }
 
-func (rss Rss) ToXml(data []byte) (XMLFeed, error) {
+func (rss Rss) ToXML(data []byte) (XMLFeed, error) {
   var feed XMLFeed
   err := xml.Unmarshal(data, &feed)
 
