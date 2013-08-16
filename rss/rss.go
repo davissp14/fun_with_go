@@ -7,11 +7,12 @@ import (
 )
 
 type XMLItems struct {
-  XMLName     xml.Name `xml:"item"`
-  Title       string   `xml:"title"`
-  Link        string   `xml:"link"`
-  Comments    string   `xml:"comments"`
-  Description string   `xml:"description"`
+  XMLName     xml.Name  `xml:"item"`
+  Title       string    `xml:"title"`
+  Pub_date    string    `xml:"pubDate"`
+  Link        string    `xml:"link"`
+  Comments    string    `xml:"comments"`
+  Description string    `xml:"description"`
 }
 
 type XMLChannel struct {

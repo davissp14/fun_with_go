@@ -5,6 +5,8 @@ import (
   "labix.org/v2/mgo/bson"
   "fun_with_go/rss"
   "fmt"
+  "net/http"
+  "time"
 )
 
 type Channel struct {
@@ -16,6 +18,7 @@ type Channel struct {
 
 type NewsItem struct {
   Channel_id  bson.ObjectId
+  Pub_date    time.Time
   Title       string
   Link        string
   Comments    string
@@ -55,12 +58,12 @@ func parseXML(address string) rss.XMLFeed {
 
   data, err := rss.FetchData(address)
   if err != nil {
-    panic(err)
+    fmt.Println(err)
   }
 
   xmlFeed, err := rss.ToXML(data)
   if err != nil {
-    panic(err)
+    fmt.Println(err)
   }
   return xmlFeed
 }
@@ -70,7 +73,10 @@ func addNewsItems(session *mgo.Session, feed rss.XMLFeed, channel Channel) {
   added := 0
   for _, item := range feed.XMLFeed.XMLChannel {
     var newsItem NewsItem
-    newsItem = NewsItem{Title: item.Title, Link: item.Link, Comments: item.Comments, Description: item.Description, Channel_id: channel.Id}
+    // Using http.ParseTime since time.Parse doesn't seem to work :/
+    pubDate, _ := http.ParseTime(item.Pub_date)
+
+    newsItem = NewsItem{Pub_date: pubDate, Title: item.Title, Link: item.Link, Comments: item.Comments, Description: item.Description, Channel_id: channel.Id}
     err := collection.Insert(&newsItem)
     if err == nil {
       added++
